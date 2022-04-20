@@ -1,0 +1,165 @@
+{%  extends 'findingJob/main.html' %}
+{% block title %} Job List {%endblock%}
+{% block content %}
+{% load static %}
+
+<!-- Header End -->
+<div class="container-xxl py-5 bg-dark page-header mb-5">
+    <div class="container my-5 pt-5 pb-4">
+        <h1 class="display-3 text-white mb-3 animated slideInDown">Job List</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb text-uppercase">
+                <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                <li class="breadcrumb-item text-white active" aria-current="page">Job List</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+<!-- Header End -->
+
+
+<!-- Jobs Start -->
+<div class="container-xxl py-5 ">
+    <div class="container" id="myBtnContainer">
+        <h1 class="text-center mb-5 wow fadeInUp" data-wow-delay="0.1s">Job Listing</h1>
+        <div class="tab-class text-center wow fadeInUp" data-wow-delay="0.3s">
+            <ul class="nav nav-pills d-inline-flex justify-content-center border-bottom mb-5">
+                <li class="nav-item " data-filter="all">
+                    <a class="d-flex align-items-center text-start mx-3 ms-0 pb-3 active" data-bs-toggle="pill"
+                       onclick="filterSelection('all')">
+                        <h6 class="mt-n1 mb-0"> Show all</h6>
+
+                    </a>
+                </li>
+                <li class="nav-item" data-filter=".fulltime">
+                    <a class="d-flex align-items-center text-start mx-3 pb-3" data-bs-toggle="pill"
+                       onclick="filterSelection('fulltime')">
+                        <h6 class="mt-n1 mb-0"> full time </h6>
+                    </a>
+                </li>
+                <li class="nav-item" data-filter=".parttime">
+                    <a class="d-flex align-items-center text-start mx-3 me-0 pb-3" data-bs-toggle="pill"
+                       onclick="filterSelection('parttime')">
+                        <h6 class="mt-n1 mb-0"> Part Time </h6>
+                    </a>
+                </li>
+            </ul>
+
+            {% for jobListinfull in jobListinfull %}
+            <div id="tab-1" class="tab-pane fade show p-0 tab-content active fulltime">
+                <div class="job-item p-4 mb-4 ">
+                    <div class="row g-4  ">
+                        <div class="col-sm-12 col-md-8 d-flex align-items-center">
+                            <img class="flex-shrink-0 img-fluid border rounded"
+                                 src="/img/{{jobListinfull.company_logo}}" alt="logo"
+                                 style="width: 80px; height: 80px;">
+                            <div class="text-start ps-4">
+                                <h5 class="mb-3">{{ jobListinfull.title }}</h5>
+                                <span class="text-truncate me-3"><i
+                                        class="fa fa-map-marker-alt text-primary me-2"></i>{{ jobListinfull.location }}</span>
+                                <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i>{{ jobListinfull.type }}</span>
+                                <span class="text-truncate me-0"><i
+                                        class="far fa-money-bill-alt text-primary me-2"></i>Rs. {{ jobListinfull.salary }}</span>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
+                            <div class="d-flex mb-3">
+                                <a class="btn btn-light btn-square me-3" href=""><i
+                                        class="far fa-heart text-primary"></i></a>
+                                <a class="btn btn-primary" href="/jobDetail/{{jobListinfull.id}}">More</a>
+                            </div>
+                            <small class="text-truncate"><i class="far fa-calendar-alt text-primary me-2"></i>Date
+                                Line: {{ jobListinfull.deadline_date }}</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+
+
+        {% for jobListinaprt in jobListinaprt %}
+        <div id="tab-2" class="tab-pane fade show p-0 tab-content active parttime">
+            <div class="job-item p-4 mb-4">
+                <div class="row g-4">
+                    <div class="col-sm-12 col-md-8 d-flex align-items-center">
+                        <img class="flex-shrink-0 img-fluid border rounded"
+                             src="/img/{{jobListinaprt.company_logo}}" alt="logo"
+                             style="width: 80px; height: 80px;">
+                        <div class="text-start ps-4">
+                            <h5 class="mb-3">{{ jobListinaprt.title }}</h5>
+                            <span class="text-truncate me-3"><i
+                                    class="fa fa-map-marker-alt text-primary me-2"></i>{{ jobListinaprt.location }}</span>
+                            <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i>{{ jobListinaprt.type }}</span>
+                            <span class="text-truncate me-0"><i
+                                    class="far fa-money-bill-alt text-primary me-2"></i>Rs. {{ jobListinaprt.salary }}</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
+                        <div class="d-flex mb-3">
+                            <a class="btn btn-light btn-square me-3" href=""><i
+                                    class="far fa-heart text-primary"></i></a>
+                            <a class="btn btn-primary" href="/jobDetail/{{jobListinaprt.id}}">More</a>
+                        </div>
+                        <small class="text-truncate"><i class="far fa-calendar-alt text-primary me-2"></i>Date
+                            Line: {{ jobListinaprt.deadline_date }}</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+
+
+    </div>
+</div>
+</div>
+<!-- Jobs End -->
+
+
+<script>
+filterSelection("all")
+function filterSelection(c) {
+  var x, i;
+  x = document.getElementsByClassName("tab-content");
+  if (c == "all") c = "";
+  for (i = 0; i < x.length; i++) {
+    w3RemoveClass(x[i], "show");
+    if (x[i].className.indexOf(c) > -1) w3AddClass(x[i], "show");
+  }
+}
+
+function w3AddClass(element, name) {
+  var i, arr1, arr2;
+  arr1 = element.className.split(" ");
+  arr2 = name.split(" ");
+  for (i = 0; i < arr2.length; i++) {
+    if (arr1.indexOf(arr2[i]) == -1) {element.className += " " + arr2[i];}
+  }
+}
+
+function w3RemoveClass(element, name) {
+  var i, arr1, arr2;
+  arr1 = element.className.split(" ");
+  arr2 = name.split(" ");
+  for (i = 0; i < arr2.length; i++) {
+    while (arr1.indexOf(arr2[i]) > -1) {
+      arr1.splice(arr1.indexOf(arr2[i]), 1);
+    }
+  }
+  element.className = arr1.join(" ");
+}
+
+
+// Add active class to the current button (highlight it)
+var btnContainer = document.getElementById("myBtnContainer");
+var btns = btnContainer.getElementsByClassName("btn");
+for (var i = 0; i < btns.length; i++) {
+  btns[i].addEventListener("click", function(){
+    var current = document.getElementsByClassName("active");
+    current[0].className = current[0].className.replace(" active", "");
+    this.className += " active";
+  });
+}
+
+</script>
+{% endblock %}

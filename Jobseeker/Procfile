@@ -1,0 +1,1 @@
+web: gunicorn Jobseeker.wsgi --log-file -

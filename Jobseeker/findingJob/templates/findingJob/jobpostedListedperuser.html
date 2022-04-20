@@ -1,0 +1,203 @@
+{%  extends 'findingJob/main.html' %}
+{% block title %} Job List {%endblock%}
+{% block content %}
+{% load static %}
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<style>
+
+.modal-confirm {
+	color: #636363;
+	width: 400px;
+}
+.modal-confirm .modal-content {
+	padding: 20px;
+	border-radius: 5px;
+	border: none;
+	text-align: center;
+	font-size: 14px;
+}
+.modal-confirm .modal-header {
+	border-bottom: none;
+	position: relative;
+}
+.modal-confirm h4 {
+	text-align: center;
+	font-size: 26px;
+	margin: 30px 0 -10px;
+}
+.modal-confirm .close {
+	position: absolute;
+	top: -5px;
+	right: -2px;
+}
+.modal-confirm .modal-body {
+	color: #999;
+}
+.modal-confirm .modal-footer {
+	border: none;
+	text-align: center;
+	border-radius: 5px;
+	font-size: 13px;
+	padding: 10px 15px 25px;
+}
+.modal-confirm .modal-footer a {
+	color: #999;
+}
+.modal-confirm .icon-box {
+	width: 80px;
+	height: 80px;
+	margin: 0 auto;
+	border-radius: 50%;
+	z-index: 9;
+	text-align: center;
+	border: 3px solid #f15e5e;
+}
+.modal-confirm .icon-box i {
+	color: #f15e5e;
+	font-size: 46px;
+	display: inline-block;
+	margin-top: 13px;
+}
+.modal-confirm .btn, .modal-confirm .btn:active {
+	color: #fff;
+	border-radius: 4px;
+	background: #60c7c1;
+	text-decoration: none;
+	transition: all 0.4s;
+	line-height: normal;
+	min-width: 120px;
+	border: none;
+	min-height: 40px;
+	border-radius: 3px;
+	margin: 0 5px;
+}
+.modal-confirm .btn-secondary {
+	background: #c1c1c1;
+}
+.modal-confirm .btn-secondary:hover, .modal-confirm .btn-secondary:focus {
+	background: #a8a8a8;
+}
+.modal-confirm .btn-danger {
+	background: #f15e5e;
+}
+.modal-confirm .btn-danger:hover, .modal-confirm .btn-danger:focus {
+	background: #ee3535;
+}
+.trigger-btn {
+	display: inline-block;
+	margin: 100px auto;
+}
+
+
+</style>
+<!-- Header End -->
+<div class="container-xxl py-5 bg-dark page-header mb-5">
+    <div class="container my-5 pt-5 pb-4">
+        <h1 class="display-3 text-white mb-3 animated slideInDown">Job List Posted By Company</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb text-uppercase">
+                <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'jobPost' %}">Job Post</a></li>
+                <li class="breadcrumb-item text-white active" aria-current="page">Job Listing Posted By
+                    {{request.user}}
+                </li>
+            </ol>
+            
+            <ol class="breadcrumb text-uppercase">
+                <li class="breadcrumb-item"><a href="" aria-disabled="true"><span class="hello-msg"> Hello, {{request.user}}</span></a>
+                </li>
+            </ol>
+            <ol class="breadcrumb text-uppercase">
+                <li class="breadcrumb-item text-white active" aria-current="page">
+                    <span><a class="btn btn-sm btn-danger" href="{% url 'logout' %}">Logout</a>
+                               </span>
+                </li>
+            </ol>
+
+
+        </nav>
+    </div>
+</div>
+<!-- Header End -->
+
+
+<!-- Jobs Start -->
+<div class="container-xxl py-5 ">
+<h1 class="text-center mb-5 wow fadeInUp" data-wow-delay="0.1s">Job Listing</h1>
+            <div class="padding">
+            {% for message in messages %}
+            <p class="alert alert-warning" id="messages">{{message}}</p>
+            {% endfor %}
+        </div>
+    {% for postedjob in postedjob%}
+    <div class="container" id="myBtnContainer">
+        <div class="tab-class text-center wow fadeInUp" data-wow-delay="0.3s">
+            <div id="tab-1" class="tab-pane fade show p-0 tab-content active fulltime">
+                <div class="job-item p-4 mb-4 ">
+                    <div class="row g-4  ">
+                        <div class="col-sm-12 col-md-8 d-flex align-items-center">
+                            <img class="flex-shrink-0 img-fluid border rounded"
+                                 src="/img/{{postedjob.company_logo}}" alt="logo"
+                                 style="width: 80px; height: 80px;">
+                            <div class="text-start ps-4">
+                                <h5 class="mb-3">{{postedjob.title}}</h5>
+                                <span class="text-truncate me-3"><i
+                                        class="fa fa-map-marker-alt text-primary me-2"></i>{{postedjob.location}}</span>
+                                <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2">{{postedjob.type}}</i></span>
+                                <span class="text-truncate me-0"><i
+                                        class="far fa-money-bill-alt text-primary me-2"></i>Rs. {{postedjob.salary}}</span>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
+                            <div class="d-flex mb-3">
+                                <a class="btn btn-light btn-square me-3" href=""><i
+                                        class="far fa-heart text-primary"></i></a>
+                                <a class="btn btn-primary" href="/jobDetail/{{postedjob.id}}">More</a> &nbsp;
+                                <a class="btn btn-warning" href="{% url 'update_jobDetail' postedjob.id %}">Update</a> &nbsp;
+                                <a class="btn btn-danger" href="#myModal" data-toggle="modal">Delete</a>&nbsp;
+                            </div>
+                            <small class="text-truncate"><i class="far fa-calendar-alt text-primary me-2"></i>Date
+                                Line: {{postedjob.deadline_date}}</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Jobs End -->
+
+        <!-- Modal HTML -->
+        <div id="myModal" class="modal fade">
+            <div class="modal-dialog modal-confirm">
+                <div class="modal-content">
+                    <div class="modal-header flex-column">
+
+                        <h4 class="modal-title w-100">Are you sure?</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Do you really want to delete these records? This process cannot be undone.</p>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+
+                        <form method="post" action="{% url 'delete_jobDetail' postedjob.id %}">
+                            {% csrf_token %}
+                            <input class="btn btn-danger" type="submit" value="Confirm">
+                        </form>
+
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+{% endfor %}
+</div>
+
+
+
+{% endblock %}

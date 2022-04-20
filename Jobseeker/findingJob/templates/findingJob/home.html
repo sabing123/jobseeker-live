@@ -1,0 +1,264 @@
+{%  extends 'findingJob/main.html' %}
+{% block title %} Home {%endblock%}
+{% block content %}
+{% load static %}
+<div class="container-xxl bg-white p-0">
+    <!-- Carousel Start -->
+    <div class="container-fluid p-0">
+        <div class="owl-carousel header-carousel position-relative">
+            <div class="owl-carousel-item position-relative">
+                <img class="img-fluid" src="{% static 'img/carousel-1.jpg' %}" alt="">
+                <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center"
+                     style="background: rgba(43, 57, 64, .5);">
+                    <div class="container">
+                        <div class="row justify-content-start">
+                            <div class="col-10 col-lg-8">
+                                <h1 class="display-3 text-white animated slideInDown mb-4">Find The Perfect Job That You
+                                    Deserved</h1>
+                                <p class="fs-5 fw-medium text-white mb-4 pb-2">Vero elitr justo clita lorem. Ipsum dolor
+                                    at sed stet sit diam no. Kasd rebum ipsum et diam justo clita et kasd rebum sea
+                                    elitr.</p>
+                                <a href="" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft"
+                                   contenteditable="true">Search A
+                                    Job</a>
+                                <a href="" class="btn btn-secondary py-md-3 px-md-5 animated slideInRight"
+                                   contenteditable="true">Find A
+                                    Talent</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="owl-carousel-item position-relative">
+                <img class="img-fluid" src="{% static 'img/carousel-2.jpg' %}" alt="">
+                <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center"
+                     style="background: rgba(43, 57, 64, .5);">
+                    <div class="container">
+                        <div class="row justify-content-start">
+                            <div class="col-10 col-lg-8">
+                                <h1 class="display-3 text-white animated slideInDown mb-4">Find The Best Startup Job
+                                    That Fit You</h1>
+                                <p class="fs-5 fw-medium text-white mb-4 pb-2">Vero elitr justo clita lorem. Ipsum dolor
+                                    at sed stet sit diam no. Kasd rebum ipsum et diam justo clita et kasd rebum sea
+                                    elitr.</p>
+                                <a href="#search" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">Search
+                                    A
+                                    Job</a>
+                                <a href="" class="btn btn-secondary py-md-3 px-md-5 animated slideInRight">Find A
+                                    Talent</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Carousel End -->
+
+
+    <!-- Search Start -->
+
+
+    <div class="container-fluid bg-primary mb-5 wow fadeIn" data-wow-delay="0.1s" style="padding: 35px;">
+        <div class="container">
+            <div class="row g-2">
+                <div class="col-md-12">
+                    <div class="row g-2">
+                        <div class="col-md-6">
+                            <input type="text" class="form-control border-0" placeholder="Search Job Title"
+                                   id="SearchTitle" onkeyup="myFunction()">
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control border-0" placeholder="Search Job Location"
+                                   id="SearchLocation" onkeyup="myFunction()">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Jobs Start -->
+    <div class="container-xxl py-5 ">
+        <div class="container">
+            <h1 class="text-center mb-5 wow fadeInUp" data-wow-delay="0.1s" id="text">Job Listing</h1>
+            <div class="tab-class text-center wow fadeInUp" data-wow-delay="0.3s">
+                {% for jobSearch in page %}
+                <div class="tab-content target" id="search">
+                    <div id="tab-1" class="tab-pane fade show p-0 active ">
+                        <div class="job-item p-4 mb-4">
+                            <div class="row g-4">
+                                <div class="col-sm-12 col-md-8 d-flex align-items-center">
+                                    <img class="flex-shrink-0 img-fluid border rounded"
+                                         src="/img/{{jobSearch.company_logo}} " alt=""
+                                         style="width: 80px; height: 80px;">
+                                    <div class="text-start ps-4">
+                                        <h5 class="mb-3">{{jobSearch.title }}</h5>
+                                        <medium class="text-truncate me-3"><i
+                                                class="fa fa-map-marker-alt text-primary me-2"></i>{{jobSearch.location}}
+                                        </medium>
+                                        <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i>{{jobSearch.type }}</span>
+                                        <span class="text-truncate me-0"><i
+                                                class="far fa-money-bill-alt text-primary me-2"></i>{{jobSearch.salary}}</span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
+                                    <div class="d-flex mb-3">
+                                        <!--                                        <a class="btn btn-light btn-square me-3" href=""><i-->
+                                        <!--                                                class="far fa-heart text-primary"></i></a>-->
+                                        <a class="btn btn-primary" href="/jobDetail/{{jobSearch.id}}">More</a>
+                                    </div>
+                                    <small class="text-truncate"><i class="far fa-calendar-alt text-primary me-2"></i>Date
+                                        Line: {{jobSearch.deadline_date}}</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                {% endfor %}
+
+
+                <nav aria-label="Page navigation example" class="pagination-1">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item">
+                            {% if page.has_previous %}
+                            <a class="page-link"
+                               href="{% url 'home'%}?page={{ page.previous_page_number }}">Previous</a>
+                            {% endif %}
+                        </li>
+                        {% for num_page in page.paginator.page_range %}<br>
+                        {% if page.number == num_page %}
+                        <li class="page-item active"><a class="page-link" href="{% url 'home'%}?page={{ num_page}}">{{num_page}}</a>
+                        </li>
+                        {% else %}
+                        <li class="page-item"><a class="page-link"
+                                                 href="{% url 'home'%}?page={{ num_page}}">{{num_page}}</a></li>
+
+
+                        {% endif %}<br>
+                        {% endfor %}
+                        <li class="page-item">
+                            {% if page.has_next %}
+                            <a class="page-link" href="{% url 'home'%}?page={{ page.next_page_number }}">Next</a>
+                            {% endif %}
+                        </li>
+                    </ul>
+                </nav>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Jobs End -->
+
+
+<!-- Jobs Start -->
+
+
+<!-- Category Start -->
+<div class="container-xxl py-5">
+    <div class="container">
+        <h1 class="text-center mb-5 wow fadeInUp" data-wow-delay="0.1s">Explore By Category</h1>
+        <div class="row g-4">
+            {% for jc in countingCat %}
+            <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.1s">
+                <a class="cat-item rounded p-4" href="">
+                    <img class="flex-shrink-0 img-fluid text-primary mb-4"
+                         src="/img/{{jc.jobcategory__category_logo}}" alt="logo"
+                         style="width: 80px; height: 80px;">
+                    <h6 class="mb-3">{{jc.jobcategory__name}}</h6>
+                    <p class="mb-0">{{jc.jobcategory__count}} Vacancy</p>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- Category End -->
+
+
+<!-- About Start -->
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="row g-5 align-items-center">
+            <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
+                <div class="row g-0 about-bg rounded overflow-hidden">
+                    <div class="col-6 text-start">
+                        <img class="img-fluid w-100" src="{% static 'img/about-1.jpg' %}">
+                    </div>
+                    <div class="col-6 text-start">
+                        <img class="img-fluid" src="{% static 'img/about-2.jpg' %}"
+                             style="width: 85%; margin-top: 15%;">
+                    </div>
+                    <div class="col-6 text-end">
+                        <img class="img-fluid" src="{% static 'img/about-3.jpg' %}" style="width: 85%;">
+                    </div>
+                    <div class="col-6 text-end">
+                        <img class="img-fluid w-100" src="{% static 'img/about-4.jpg' %}">
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
+                <h1 class="mb-4">We Help To Get The Best Job And Find A Talent</h1>
+                <p class="mb-4">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu diam amet diam et
+                    eos. Clita erat ipsum et lorem et sit, sed stet lorem sit clita duo justo magna dolore erat amet</p>
+                <p><i class="fa fa-check text-primary me-3"></i>Tempor erat elitr rebum at clita</p>
+                <p><i class="fa fa-check text-primary me-3"></i>Aliqu diam amet diam et eos</p>
+                <p><i class="fa fa-check text-primary me-3"></i>Clita duo justo magna dolore erat amet</p>
+                <a class="btn btn-primary py-3 px-5 mt-3" href="{%url 'about' %}">Read More</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- About End -->
+
+
+
+<!--<script>-->
+
+<!--let autocomplete;-->
+
+<!--function initAutocomplete(){-->
+
+<!--	autocomplete = new google.maps.places.Autocomplete(-->
+<!--	document.getElementById('SearchLocation'),{-->
+<!--	type:['establishment'],-->
+<!--	componentRestriction:{'country':['AU']},-->
+<!--	fields:['place_id','geometry','name']-->
+
+
+<!--	});-->
+
+<!--}-->
+
+
+<!--</script>-->
+
+<!--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAzB_-PNe0oZ9G0vJQ6A1o7A4d7ZRpej_8&libraries=places&callback=initAutocomplete" async defer>-->
+
+
+<!--</script>-->
+
+<div class="card" style="width: 25rem; float:right;" id="cookieNotice">
+    <div id="closeIcon" style="display: none;">
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">Cookie Consent</h5>
+        <p class="card-text">This website uses cookies or similar technologies, to enhance your browsing experience and
+            provide personalized recommendations. By continuing to use our website, you agree to our <a
+                    style="color:#115cfa;" href="{% url 'PrivacyPolicy' %}">Privacy Policy</a></p>
+
+        <button class="btn btn-primary" onclick="acceptCookieConsent();">Accept</button>
+    </div>
+</div>
+
+<script>
+
+
+</script>
+
+
+{% endblock %}
